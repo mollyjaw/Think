@@ -749,26 +749,18 @@ function Library:Window(options)
 
                     
                 -- Add Refresh method to the dropdown
-                -- Create a meta table to hold both the frame and refresh function
-                local dropdownObject = {
-                    Instance = Dropdown,
-                    Refresh = function(self, newList)
-                        clearDropdown()
-                        populateDropdown(newList)
-                        -- Reset dropdown state
-                        Dropped = false
-                        dropdownText.Text = " " .. options.default
-                        TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                            Size = UDim2.new(0, 87, 0, 0)
-                        }):Play()
-                        TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                            BorderSizePixel = 0
-                        }):Play()
-                    end
-                }
-
-
-
+                Dropdown.Refresh = function(self, newList)
+                    populateDropdown(newList)
+                    -- Reset dropdown state
+                    Dropped = false
+                    dropdownText.Text = " " .. options.default
+                    TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                        Size = UDim2.new(0, 87, 0, 0)
+                    }):Play()
+                    TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                        BorderSizePixel = 0
+                    }):Play()
+                end
                     dropdownArrow.Image = "rbxassetid://3926305904" 
 
                     Dropdown.Name = "Dropdown"
@@ -814,7 +806,19 @@ function Library:Window(options)
                     dropdownArrow.AutoButtonColor = false
                     dropdownArrow.Image = "rbxassetid://8008296380"
                     dropdownArrow.ImageColor3 = Color3.fromRGB(157, 171, 182)
-
+                    local dropdownShadow = Instance.new("ImageLabel")
+                    dropdownShadow.Name = "dropdownShadow"
+                    dropdownShadow.Parent = dropdownList
+                    dropdownShadow.BackgroundTransparency = 1
+                    dropdownShadow.Position = UDim2.new(0, -2, 0, -2)
+                    dropdownShadow.Size = UDim2.new(1, 4, 1, 4)
+                    dropdownShadow.ZIndex = 9
+                    dropdownShadow.Image = "rbxassetid://297774371"
+                    dropdownShadow.ImageTransparency = 0.6
+                    dropdownShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+                    dropdownShadow.ScaleType = Enum.ScaleType.Slice
+                    dropdownShadow.SliceCenter = Rect.new(20, 20, 280, 280)
+                
                     dropdownArrow.MouseButton1Click:Connect(function()
                         Dropped = not Dropped
                         if Dropped then
@@ -877,18 +881,6 @@ function Library:Window(options)
                         dropdownBtn.ZIndex = 15
                         clickEffect({button = dropdownBtn, amount = 5})
 
-                                        -- Add a subtle shadow effect (optional)
-                    local dropdownShadow = Instance.new("ImageLabel")
-                    dropdownShadow.Name = "dropdownShadow"
-                    dropdownShadow.Parent = dropdownList
-                    dropdownShadow.BackgroundTransparency = 1
-                    dropdownShadow.Position = UDim2.new(0, 0, 0, 0)
-                    dropdownShadow.Size = UDim2.new(1, 0, 1, 4)
-                    dropdownShadow.ZIndex = 9
-                    dropdownShadow.Image = "rbxassetid://297774371" -- A shadow asset
-                    dropdownShadow.ImageTransparency = 0.7
-                    dropdownShadow.ImageColor3 = Color3.fromRGB(15, 42, 91)
-
                         Count = Count + 1
                         dropdownList.ZIndex -= Count
                         DropYSize = DropYSize + 18
@@ -898,22 +890,6 @@ function Library:Window(options)
                             options.callback(v)
                         end)
                     end
-                    return {
-                        Instance = Dropdown,
-                        Refresh = function(self, newList)
-                            clearDropdown()
-                            populateDropdown(newList)
-                            -- Reset dropdown state
-                            Dropped = false
-                            dropdownText.Text = " " .. options.default
-                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                                Size = UDim2.new(0, 87, 0, 0)
-                            }):Play()
-                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                                BorderSizePixel = 0
-                            }):Play()
-                        end
-                    }
                 end
 
 

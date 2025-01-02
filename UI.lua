@@ -696,6 +696,47 @@ function Library:Window(options)
                         DropYSize = 0
                     end
 
+
+
+    -- Create a function to handle the dropdown toggle
+    local function toggleDropdown()
+        Dropped = not Dropped
+        if Dropped then
+            if dropdownLabel.TextColor3 ~= Color3.fromRGB(234, 239, 245) then
+                TweenService:Create(dropdownLabel, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                    TextColor3 = Color3.fromRGB(234, 239, 246)
+                }):Play()
+            end
+            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                Size = UDim2.new(0, 87, 0, DropYSize)
+            }):Play()
+            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                BorderSizePixel = 1
+            }):Play()
+        else
+            if dropdownLabel.TextColor3 ~= Color3.fromRGB(157, 171, 182) then
+                TweenService:Create(dropdownLabel, TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                    TextColor3 = Color3.fromRGB(157, 171, 182)
+                }):Play()
+            end
+            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                Size = UDim2.new(0, 87, 0, 0)
+            }):Play()
+            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                BorderSizePixel = 0
+            }):Play()
+        end
+    end
+    dropdownText.MouseButton1Click:Connect(toggleDropdown)
+    dropdownText.Active = true
+    dropdownText.AutoButtonColor = false
+    dropdownArrow.MouseButton1Click:Connect(toggleDropdown)
+    
+    -- Make the label clickable too
+    dropdownLabel.Active = true
+    dropdownLabel.MouseButton1Click:Connect(toggleDropdown)
+
+
                        -- Function to populate dropdown
     local function populateDropdown(list)
         clearDropdown()
@@ -849,34 +890,6 @@ function Library:Window(options)
                             }):Play()
                         end
                     end)
-                    Dropdown.MouseButton1Click:Connect(function()
-                        Dropped = not Dropped
-                        if Dropped then
-                            if dropdownLabel.TextColor3 ~= Color3.fromRGB(234, 239, 245) then
-                                TweenService:Create(dropdownLabel, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                                    TextColor3 = Color3.fromRGB(234, 239, 246)
-                                }):Play()
-                            end
-                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                                Size = UDim2.new(0, 87, 0, DropYSize)
-                            }):Play()
-                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                                BorderSizePixel = 1
-                            }):Play()
-                        elseif not Dropped then
-                            if dropdownLabel.TextColor3 ~= Color3.fromRGB(157, 171, 182) then
-                                TweenService:Create(dropdownLabel, TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                                    TextColor3 = Color3.fromRGB(157, 171, 182)
-                                }):Play()
-                            end
-                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                                Size = UDim2.new(0, 87, 0, 0)
-                            }):Play()
-                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                                BorderSizePixel = 0
-                            }):Play()
-                        end
-                    end)
 
                     dropdownList.Name = "dropdownList"
                     dropdownList.Parent = dropdownText
@@ -922,21 +935,21 @@ function Library:Window(options)
                     end
 
                     return {
-                        Instance = Dropdown,
-                        Refresh = function(self, newList)
-                            clearDropdown()
-                            populateDropdown(newList)
-                            -- Reset dropdown state
-                            Dropped = false
-                            dropdownText.Text = " " .. options.default
-                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                                Size = UDim2.new(0, 87, 0, 0)
-                            }):Play()
-                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                                BorderSizePixel = 0
-                            }):Play()
-                        end
-                    }
+    Instance = Dropdown,
+    Refresh = function(self, newList)
+        clearDropdown()
+        populateDropdown(newList)
+        -- Reset dropdown state
+        Dropped = false
+        dropdownText.Text = " " .. options.default
+        TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+            Size = UDim2.new(0, 87, 0, 0)
+        }):Play()
+        TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+            BorderSizePixel = 0
+        }):Play()
+    end
+}
                 end
 
 

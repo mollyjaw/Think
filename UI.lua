@@ -746,21 +746,23 @@ function Library:Window(options)
                         populateDropdown(options.list)
 
                     end
-
-                    
-                -- Add Refresh method to the dropdown
-                Dropdown.Refresh = function(self, newList)
-                    populateDropdown(newList)
-                    -- Reset dropdown state
-                    Dropped = false
-                    dropdownText.Text = " " .. options.default
-                    TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                        Size = UDim2.new(0, 87, 0, 0)
-                    }):Play()
-                    TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                        BorderSizePixel = 0
-                    }):Play()
-                end
+                    local dropdownObject = {
+                        Instance = Dropdown,
+                        Refresh = function(self, newList)
+                            clearDropdown()
+                            populateDropdown(newList)
+                            -- Reset dropdown state
+                            Dropped = false
+                            dropdownText.Text = " " .. options.default
+                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                Size = UDim2.new(0, 87, 0, 0)
+                            }):Play()
+                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                BorderSizePixel = 0
+                            }):Play()
+                        end
+                    }
+                
                     dropdownArrow.Image = "rbxassetid://3926305904" 
 
                     Dropdown.Name = "Dropdown"
@@ -890,6 +892,23 @@ function Library:Window(options)
                             options.callback(v)
                         end)
                     end
+
+                    return {
+                        Instance = Dropdown,
+                        Refresh = function(self, newList)
+                            clearDropdown()
+                            populateDropdown(newList)
+                            -- Reset dropdown state
+                            Dropped = false
+                            dropdownText.Text = " " .. options.default
+                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                Size = UDim2.new(0, 87, 0, 0)
+                            }):Play()
+                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                BorderSizePixel = 0
+                            }):Play()
+                        end
+                    }
                 end
 
 

@@ -695,14 +695,7 @@ function Library:Window(options)
                         end
                         DropYSize = 0
                     end
--- Content frame that will contain the actual dropdown items
-local dropdownContent = Instance.new("Frame")
-dropdownContent.Name = "dropdownContent"
-dropdownContent.Parent = dropdownContainer
-dropdownContent.BackgroundTransparency = 1
-dropdownContent.Position = UDim2.new(0, 0, 0, 0)
-dropdownContent.Size = UDim2.new(1, 0, 1, 0)
-dropdownContent.ZIndex = 10
+
                        -- Function to populate dropdown
     local function populateDropdown(list)
         clearDropdown()
@@ -712,7 +705,7 @@ dropdownContent.ZIndex = 10
             local Count = 1
 
             dropdownBtn.Name = "dropdownBtn"
-            dropdownBtn.Parent = dropdownContent
+            dropdownBtn.Parent = dropdownList
             dropdownBtn.BackgroundColor3 = Color3.fromRGB(234, 239, 245)
             dropdownBtn.BackgroundTransparency = 1.000
             dropdownBtn.BorderSizePixel = 0
@@ -771,21 +764,7 @@ dropdownContent.ZIndex = 10
                     }
                 
                     dropdownArrow.Image = "rbxassetid://3926305904" 
-                    local dropdownContainer = Instance.new("Frame")
-                    dropdownContainer.Name = "dropdownContainer"
-                    dropdownContainer.Parent = dropdownText
-                    dropdownContainer.BackgroundTransparency = 1
-                    dropdownContainer.Position = UDim2.new(0, 0, 1, 0)
-                    dropdownContainer.Size = UDim2.new(1, 0, 0, 0) -- This will be tweened
-                    dropdownContainer.ClipsDescendants = true
-                    -- Content frame that will contain the actual dropdown items
-local dropdownContent = Instance.new("Frame")
-dropdownContent.Name = "dropdownContent"
-dropdownContent.Parent = dropdownContainer
-dropdownContent.BackgroundTransparency = 1
-dropdownContent.Position = UDim2.new(0, 0, 0, 0)
-dropdownContent.Size = UDim2.new(1, 0, 1, 0)
-dropdownContent.ZIndex = 10
+
                     Dropdown.Name = "Dropdown"
                     Dropdown.Parent = sectionFrame
                     Dropdown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -794,7 +773,6 @@ dropdownContent.ZIndex = 10
                     Dropdown.Position = UDim2.new(0.0697674453, 0, 0.237037033, 0)
                     Dropdown.Size = UDim2.new(0, 200, 0, 22)
                     Dropdown.ZIndex = 2
-                    dropListLayout.Parent = dropdownContent
 
                     dropdownLabel.Name = "dropdownLabel"
                     dropdownLabel.Parent = Dropdown
@@ -830,30 +808,75 @@ dropdownContent.ZIndex = 10
                     dropdownArrow.AutoButtonColor = false
                     dropdownArrow.Image = "rbxassetid://8008296380"
                     dropdownArrow.ImageColor3 = Color3.fromRGB(157, 171, 182)
-   -- Shadow setup
-local dropdownShadow = Instance.new("ImageLabel")
-dropdownShadow.Name = "dropdownShadow"
-dropdownShadow.Parent = dropdownContainer
-dropdownShadow.BackgroundTransparency = 1
-dropdownShadow.Position = UDim2.new(0, 0, 0, 0)
-dropdownShadow.Size = UDim2.new(1, 0, 1, 0)
-dropdownShadow.ZIndex = 9
-dropdownShadow.Image = "rbxassetid://297774371"
-dropdownShadow.ImageTransparency = 0.8
-dropdownShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+                    local dropdownShadow = Instance.new("ImageLabel")
+                    dropdownShadow.Name = "dropdownShadow"
+                    dropdownShadow.Parent = dropdownList
+                    dropdownShadow.BackgroundTransparency = 1
+                    dropdownShadow.Position = UDim2.new(0, -2, 0, -2)
+                    dropdownShadow.Size = UDim2.new(1, 4, 1, 4)
+                    dropdownShadow.ZIndex = 9
+                    dropdownShadow.Image = "rbxassetid://297774371"
+                    dropdownShadow.ImageTransparency = 0.6
+                    dropdownShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+                    dropdownShadow.ScaleType = Enum.ScaleType.Slice
+                    dropdownShadow.SliceCenter = Rect.new(20, 20, 280, 280)
                 
-dropdownArrow.MouseButton1Click:Connect(function()
-    Dropped = not Dropped
-    if Dropped then
-        TweenService:Create(dropdownContainer, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-            Size = UDim2.new(1, 0, 0, DropYSize)
-        }):Play()
-    else
-        TweenService:Create(dropdownContainer, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-            Size = UDim2.new(1, 0, 0, 0)
-        }):Play()
-    end
-end)
+                    dropdownArrow.MouseButton1Click:Connect(function()
+                        Dropped = not Dropped
+                        if Dropped then
+                            if dropdownLabel.TextColor3 ~= Color3.fromRGB(234, 239, 245) then
+                                TweenService:Create(dropdownLabel, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                    TextColor3 = Color3.fromRGB(234, 239, 246)
+                                }):Play()
+                            end
+                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                Size = UDim2.new(0, 87, 0, DropYSize)
+                            }):Play()
+                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                BorderSizePixel = 1
+                            }):Play()
+                        elseif not Dropped then
+                            if dropdownLabel.TextColor3 ~= Color3.fromRGB(157, 171, 182) then
+                                TweenService:Create(dropdownLabel, TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                    TextColor3 = Color3.fromRGB(157, 171, 182)
+                                }):Play()
+                            end
+                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                Size = UDim2.new(0, 87, 0, 0)
+                            }):Play()
+                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                BorderSizePixel = 0
+                            }):Play()
+                        end
+                    end)
+                    Dropdown.MouseButton1Click:Connect(function()
+                        Dropped = not Dropped
+                        if Dropped then
+                            if dropdownLabel.TextColor3 ~= Color3.fromRGB(234, 239, 245) then
+                                TweenService:Create(dropdownLabel, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                    TextColor3 = Color3.fromRGB(234, 239, 246)
+                                }):Play()
+                            end
+                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                Size = UDim2.new(0, 87, 0, DropYSize)
+                            }):Play()
+                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                BorderSizePixel = 1
+                            }):Play()
+                        elseif not Dropped then
+                            if dropdownLabel.TextColor3 ~= Color3.fromRGB(157, 171, 182) then
+                                TweenService:Create(dropdownLabel, TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                    TextColor3 = Color3.fromRGB(157, 171, 182)
+                                }):Play()
+                            end
+                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                Size = UDim2.new(0, 87, 0, 0)
+                            }):Play()
+                            TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                BorderSizePixel = 0
+                            }):Play()
+                        end
+                    end)
 
                     dropdownList.Name = "dropdownList"
                     dropdownList.Parent = dropdownText

@@ -764,7 +764,21 @@ function Library:Window(options)
                     }
                 
                     dropdownArrow.Image = "rbxassetid://3926305904" 
-
+                    local dropdownContainer = Instance.new("Frame")
+                    dropdownContainer.Name = "dropdownContainer"
+                    dropdownContainer.Parent = dropdownText
+                    dropdownContainer.BackgroundTransparency = 1
+                    dropdownContainer.Position = UDim2.new(0, 0, 1, 0)
+                    dropdownContainer.Size = UDim2.new(1, 0, 0, 0) -- This will be tweened
+                    dropdownContainer.ClipsDescendants = true
+                    -- Content frame that will contain the actual dropdown items
+local dropdownContent = Instance.new("Frame")
+dropdownContent.Name = "dropdownContent"
+dropdownContent.Parent = dropdownContainer
+dropdownContent.BackgroundTransparency = 1
+dropdownContent.Position = UDim2.new(0, 0, 0, 0)
+dropdownContent.Size = UDim2.new(1, 0, 1, 0)
+dropdownContent.ZIndex = 10
                     Dropdown.Name = "Dropdown"
                     Dropdown.Parent = sectionFrame
                     Dropdown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -773,6 +787,7 @@ function Library:Window(options)
                     Dropdown.Position = UDim2.new(0.0697674453, 0, 0.237037033, 0)
                     Dropdown.Size = UDim2.new(0, 200, 0, 22)
                     Dropdown.ZIndex = 2
+                    dropListLayout.Parent = dropdownContent
 
                     dropdownLabel.Name = "dropdownLabel"
                     dropdownLabel.Parent = Dropdown
@@ -808,18 +823,17 @@ function Library:Window(options)
                     dropdownArrow.AutoButtonColor = false
                     dropdownArrow.Image = "rbxassetid://8008296380"
                     dropdownArrow.ImageColor3 = Color3.fromRGB(157, 171, 182)
-                    local dropdownShadow = Instance.new("ImageLabel")
-                    dropdownShadow.Name = "dropdownShadow"
-                    dropdownShadow.Parent = dropdownList
-                    dropdownShadow.BackgroundTransparency = 1
-                    dropdownShadow.Position = UDim2.new(0, -2, 0, -2)
-                    dropdownShadow.Size = UDim2.new(1, 4, 1, 4)
-                    dropdownShadow.ZIndex = 9
-                    dropdownShadow.Image = "rbxassetid://297774371"
-                    dropdownShadow.ImageTransparency = 0.6
-                    dropdownShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-                    dropdownShadow.ScaleType = Enum.ScaleType.Slice
-                    dropdownShadow.SliceCenter = Rect.new(20, 20, 280, 280)
+   -- Shadow setup
+local dropdownShadow = Instance.new("ImageLabel")
+dropdownShadow.Name = "dropdownShadow"
+dropdownShadow.Parent = dropdownContainer
+dropdownShadow.BackgroundTransparency = 1
+dropdownShadow.Position = UDim2.new(0, 0, 0, 0)
+dropdownShadow.Size = UDim2.new(1, 0, 1, 0)
+dropdownShadow.ZIndex = 9
+dropdownShadow.Image = "rbxassetid://297774371"
+dropdownShadow.ImageTransparency = 0.8
+dropdownShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
                 
                     dropdownArrow.MouseButton1Click:Connect(function()
                         Dropped = not Dropped

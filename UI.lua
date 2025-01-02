@@ -808,18 +808,7 @@ function Library:Window(options)
                     dropdownArrow.AutoButtonColor = false
                     dropdownArrow.Image = "rbxassetid://8008296380"
                     dropdownArrow.ImageColor3 = Color3.fromRGB(157, 171, 182)
-                    local dropdownShadow = Instance.new("ImageLabel")
-                    dropdownShadow.Name = "dropdownShadow"
-                    dropdownShadow.Parent = dropdownList
-                    dropdownShadow.BackgroundTransparency = 1
-                    dropdownShadow.Position = UDim2.new(0, -2, 0, -2)
-                    dropdownShadow.Size = UDim2.new(1, 4, 1, 4)
-                    dropdownShadow.ZIndex = 9
-                    dropdownShadow.Image = "rbxassetid://297774371"
-                    dropdownShadow.ImageTransparency = 0.6
-                    dropdownShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-                    dropdownShadow.ScaleType = Enum.ScaleType.Slice
-                    dropdownShadow.SliceCenter = Rect.new(20, 20, 280, 280)
+           
                 
                     dropdownArrow.MouseButton1Click:Connect(function()
                         Dropped = not Dropped

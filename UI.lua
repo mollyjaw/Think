@@ -687,60 +687,76 @@ function Library:Window(options)
                     buttoneffect({frame = dropdownLabel, entered = Dropdown})
                 
                     -- Function to clear all dropdown items
-                    local function clearDropdown()
-                        for _, child in ipairs(dropdownList:GetChildren()) do
-                            if child:IsA("TextButton") then
-                                child:Destroy()
-                            end
-                        end
-                        DropYSize = 0
-                    end
+                    -- Function to clear all dropdown items
+    local function clearDropdown()
+        for _, child in ipairs(dropdownList:GetChildren()) do
+            if child:IsA("TextButton") then
+                child:Destroy()
+            end
+        end
+        DropYSize = 0
+    end
 
                        -- Function to populate dropdown
-    local function populateDropdown(list)
-        clearDropdown()
-        
-        for i,v in next, list do
-            local dropdownBtn = Instance.new("TextButton")
-            local Count = 1
-
-            dropdownBtn.Name = "dropdownBtn"
-            dropdownBtn.Parent = dropdownList
-            dropdownBtn.BackgroundColor3 = Color3.fromRGB(234, 239, 245)
-            dropdownBtn.BackgroundTransparency = 1.000
-            dropdownBtn.BorderSizePixel = 0
-            dropdownBtn.Position = UDim2.new(-0.0110929646, 0, 0.0305557251, 0)
-            dropdownBtn.Size = UDim2.new(0, 87, 0, 18)
-            dropdownBtn.AutoButtonColor = false
-            dropdownBtn.Font = Enum.Font.Gotham
-            dropdownBtn.TextColor3 = Color3.fromRGB(234, 239, 245)
-            dropdownBtn.TextSize = 12.000
-            
-            -- Handle both string and table entries
-            local displayText = type(v) == "table" and v.Name or tostring(v)
-            dropdownBtn.Text = displayText
-            dropdownBtn.ZIndex = 15
-            clickEffect({button = dropdownBtn, amount = 5})
-
-            Count = Count + 1
-            dropdownList.ZIndex -= Count
-            DropYSize = DropYSize + 18
-
-            dropdownBtn.MouseButton1Click:Connect(function()
-                dropdownText.Text = " " .. displayText
-                options.callback(v)
+                       local function populateDropdown(list)
+                        clearDropdown()
+                        
+                        for i,v in next, list do
+                            local dropdownBtn = Instance.new("TextButton")
+                            local Count = 1
                 
-                -- Close dropdown after selection
-                Dropped = false
-                TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                    Size = UDim2.new(0, 87, 0, 0)
-                }):Play()
-                TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                    BorderSizePixel = 0
-                }):Play()
-            end)
-        end
-    end
+                            dropdownBtn.Name = "dropdownBtn"
+                            dropdownBtn.Parent = dropdownList
+                            dropdownBtn.BackgroundColor3 = Color3.fromRGB(30, 84, 182) -- Blue background color
+                            dropdownBtn.BackgroundTransparency = 0 -- Make background visible
+                            dropdownBtn.BorderSizePixel = 0
+                            dropdownBtn.Position = UDim2.new(-0.0110929646, 0, 0.0305557251, 0)
+                            dropdownBtn.Size = UDim2.new(1, 0, 0, 18) -- Full width
+                            dropdownBtn.AutoButtonColor = false
+                            dropdownBtn.Font = Enum.Font.Gotham
+                            dropdownBtn.TextColor3 = Color3.fromRGB(234, 239, 245)
+                            dropdownBtn.TextSize = 12.000
+                            
+                            -- Handle both string and table entries
+                            local displayText = type(v) == "table" and v.Name or tostring(v)
+                            dropdownBtn.Text = displayText
+                            dropdownBtn.ZIndex = 15
+                
+                            -- Add hover effect
+                            dropdownBtn.MouseEnter:Connect(function()
+                                TweenService:Create(dropdownBtn, TweenInfo.new(0.15), {
+                                    BackgroundColor3 = Color3.fromRGB(40, 100, 210) -- Lighter blue on hover
+                                }):Play()
+                            end)
+                
+                            dropdownBtn.MouseLeave:Connect(function()
+                                TweenService:Create(dropdownBtn, TweenInfo.new(0.15), {
+                                    BackgroundColor3 = Color3.fromRGB(30, 84, 182) -- Return to original blue
+                                }):Play()
+                            end)
+                
+                            clickEffect({button = dropdownBtn, amount = 5})
+                
+                            Count = Count + 1
+                            dropdownList.ZIndex -= Count
+                            DropYSize = DropYSize + 18
+                
+                            dropdownBtn.MouseButton1Click:Connect(function()
+                                dropdownText.Text = " " .. displayText
+                                options.callback(v)
+                                
+                                -- Close dropdown after selection
+                                Dropped = false
+                                TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                    Size = UDim2.new(0, 87, 0, 0)
+                                }):Play()
+                                TweenService:Create(dropdownList, TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                                    BorderSizePixel = 0
+                                }):Play()
+                            end)
+                        end
+                    end
+                
 
                     if options.list then
                         populateDropdown(options.list)
@@ -846,12 +862,29 @@ function Library:Window(options)
 
                     dropdownList.Name = "dropdownList"
                     dropdownList.Parent = dropdownText
-                    dropdownList.BackgroundColor3 = Color3.fromRGB(2, 5, 12)
+                    dropdownList.BackgroundColor3 = Color3.fromRGB(30, 84, 182) -- Match the blue background
                     dropdownList.Position = UDim2.new(0, 0, 1, 0)
                     dropdownList.Size = UDim2.new(0, 87, 0, 0)
                     dropdownList.ClipsDescendants = true
                     dropdownList.BorderSizePixel = 0
                     dropdownList.ZIndex = 10
+
+                       -- Add a subtle shadow effect (optional)
+                    local dropdownShadow = Instance.new("ImageLabel")
+                    dropdownShadow.Name = "dropdownShadow"
+                    dropdownShadow.Parent = dropdownList
+                    dropdownShadow.BackgroundTransparency = 1
+                    dropdownShadow.Position = UDim2.new(0, 0, 0, 0)
+                    dropdownShadow.Size = UDim2.new(1, 0, 1, 4)
+                    dropdownShadow.ZIndex = 9
+                    dropdownShadow.Image = "rbxassetid://297774371" -- A shadow asset
+                    dropdownShadow.ImageTransparency = 0.7
+                    dropdownShadow.ImageColor3 = Color3.fromRGB(15, 42, 91)
+
+                    dropListLayout.Name = "dropListLayout"
+                    dropListLayout.Parent = dropdownList
+                    dropListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+                    Resize(25)
 
                     dropListLayout.Name = "dropListLayout"
                     dropListLayout.Parent = dropdownList

@@ -435,22 +435,23 @@ function Library:Window(options)
 
                 function elements:Toggle(options)
                     if not options.text or not options.callback then Notify("Toggle", "Missing arguments!") return end
-
+                
                     local toggleLabel = Instance.new("TextLabel")
                     local toggleFrame = Instance.new("TextButton")
                     local togFrameCorner = Instance.new("UICorner")
                     local toggleButton = Instance.new("TextButton")
                     local togBtnCorner = Instance.new("UICorner")
-
+                
                     local State = options.state or false
-
+                    local toggle = {Instance = toggleButton} -- Store the instance
+                    
                     if options.state then
                         toggleButton.Position = UDim2.new(0.74, 0, 0.5, 0)
                         toggleLabel.TextColor3 = Color3.fromRGB(234, 239, 246)
                         toggleButton.BackgroundColor3 = Color3.fromRGB(2, 162, 243)
                         toggleFrame.BackgroundColor3 = Color3.fromRGB(2, 23, 49)
                     end
-
+                
                     toggleLabel.Name = "toggleLabel"
                     toggleLabel.Parent = sectionFrame
                     toggleLabel.BackgroundColor3 = Color3.fromRGB(157, 171, 182)
@@ -463,24 +464,30 @@ function Library:Window(options)
                     toggleLabel.TextSize = 14.000
                     toggleLabel.TextXAlignment = Enum.TextXAlignment.Left
                     buttoneffect({frame = toggleLabel, entered = toggleLabel})
-
-                    local function PerformToggle()
-                        State = not State
+                
+                    -- Store PerformToggle in the toggle table
+                    function toggle:Update(newState)
+                        if newState ~= nil then
+                            State = newState
+                        else
+                            State = not State
+                        end
+                        
                         options.callback(State)
-                        TweenService:Create(toggleButton, TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.InOut), {
+                        TweenService:Create(self.Instance, TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.InOut), {
                             Position = State and UDim2.new(0.74, 0, 0.5, 0) or UDim2.new(0.25, 0, 0.5, 0)
                         }):Play()
                         TweenService:Create(toggleLabel, TweenInfo.new(0.06, Enum.EasingStyle.Quart, Enum.EasingDirection.InOut), {
                             TextColor3 = State and Color3.fromRGB(234, 239, 246) or Color3.fromRGB(157, 171, 182)
                         }):Play()
-                        TweenService:Create(toggleButton, TweenInfo.new(0.06, Enum.EasingStyle.Quart, Enum.EasingDirection.InOut), {
+                        TweenService:Create(self.Instance, TweenInfo.new(0.06, Enum.EasingStyle.Quart, Enum.EasingDirection.InOut), {
                             BackgroundColor3 = State and Color3.fromRGB(2, 162, 243) or Color3.fromRGB(77, 77, 77)
                         }):Play()
                         TweenService:Create(toggleFrame, TweenInfo.new(0.06, Enum.EasingStyle.Quart, Enum.EasingDirection.InOut), {
                             BackgroundColor3 = State and Color3.fromRGB(2, 23, 49) or Color3.fromRGB(4, 4, 11)
                         }):Play()
                     end
-
+                
                     toggleFrame.Name = "toggleFrame"
                     toggleFrame.Parent = toggleLabel
                     toggleFrame.BackgroundColor3 = Color3.fromRGB(4, 4, 11)
@@ -494,13 +501,13 @@ function Library:Window(options)
                     toggleFrame.TextColor3 = Color3.fromRGB(0, 0, 0)
                     toggleFrame.TextSize = 14.000
                     toggleFrame.MouseButton1Click:Connect(function()
-                        PerformToggle()
+                        toggle:Update()
                     end)
-
+                
                     togFrameCorner.CornerRadius = UDim.new(0, 50)
                     togFrameCorner.Name = "togFrameCorner"
                     togFrameCorner.Parent = toggleFrame
-
+                
                     toggleButton.Name = "toggleButton"
                     toggleButton.Parent = toggleFrame
                     toggleButton.BackgroundColor3 = Color3.fromRGB(77, 77, 77)
@@ -514,14 +521,17 @@ function Library:Window(options)
                     toggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
                     toggleButton.TextSize = 14.000
                     toggleButton.MouseButton1Click:Connect(function()
-                        PerformToggle()
+                        toggle:Update()
                     end)
-
+                
                     togBtnCorner.CornerRadius = UDim.new(0, 50)
                     togBtnCorner.Name = "togFrameCorner"
                     togBtnCorner.Parent = toggleButton
-
+                
                     Resize(25)
+                    
+                    print("Returning toggle:", toggle) -- Debug print
+                    return toggle
                 end
 
                 function elements:Slider(options)

@@ -1,7 +1,7 @@
 -- ================================
 --   EXPLOIT-OPTIMIZED GAME LOADER
 -- ================================
-
+print("Vro its laoded")
 local HttpService = game:GetService("HttpService")
 local MarketplaceService = game:GetService("MarketplaceService")
 

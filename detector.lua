@@ -36,7 +36,7 @@ local Games = {
     ["shootplayers"] = {
         placeIds = {11124905486},
         keywords = {"shoot players"},
-        url = "https://raw.githubusercontent.com/your-repo/scripts/main/shootplayers.lua"
+        url = "https://bleu.rip/scripts/Anthrax_ShootPeopleOffamap.txt"
     },
     ["fish"] = {
         placeIds = {},
@@ -60,6 +60,7 @@ function GameDetector.detect()
     -- Check PlaceId first
     for gameName, gameData in pairs(Games) do
         for _, placeId in pairs(gameData.placeIds) do
+            print("Game ID: " .. placeId .. "URL:" .. gameData.url )
             if placeId == id then
                 return gameData.url
             end
